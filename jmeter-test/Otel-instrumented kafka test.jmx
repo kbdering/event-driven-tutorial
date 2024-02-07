@@ -10,7 +10,17 @@
       </elementProp>
     </TestPlan>
     <hashTree>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp OTEL" enabled="true">
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="logpath" elementType="Argument">
+            <stringProp name="Argument.name">logpath</stringProp>
+            <stringProp name="Argument.value">${__P(logpath, /Users/jakubdering/Desktop/event-driven-tutorial/lgtm/intro-to-mltp/promtail/logs)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp OTEL" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <stringProp name="LoopController.loops">1</stringProp>
@@ -42,21 +52,22 @@ log.error(&quot;failed to initialize OpenTelemetry, error : &quot; + e.getMessag
 }
 def sdk = GlobalOpenTelemetry.get();
 
-props.put(&quot;opentelemetry&quot;, sdk);
+props.put(&quot;sdk&quot;, sdk);
 def tracer = sdk.getTracer(&quot;totally-not-jmeter&quot;, &quot;0.0.1&quot;);
+props.put(&quot;tracer&quot;,tracer);
 
-props.put(&quot;tracer&quot;, tracer);</stringProp>
+</stringProp>
           <stringProp name="scriptLanguage">groovy</stringProp>
         </JSR223Sampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="OTEL - HTTP Calls " enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="OTEL - HTTP Calls " enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <stringProp name="LoopController.loops">1</stringProp>
+          <intProp name="LoopController.loops">-1</intProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <boolProp name="ThreadGroup.delayedStart">false</boolProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -65,7 +76,7 @@ props.put(&quot;tracer&quot;, tracer);</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Sample HTTP Request" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Sample HTTP Request" enabled="false">
           <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -75,7 +86,7 @@ props.put(&quot;tracer&quot;, tracer);</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
           <boolProp name="HTTPSampler.BROWSER_COMPATIBLE_MULTIPART">false</boolProp>
           <boolProp name="HTTPSampler.image_parser">false</boolProp>
@@ -85,7 +96,71 @@ props.put(&quot;tracer&quot;, tracer);</stringProp>
           <intProp name="HTTPSampler.ipSourceType">0</intProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Second HTTP Request" enabled="true">
+        <kg.apc.jmeter.samplers.DummySampler guiclass="kg.apc.jmeter.samplers.DummySamplerGui" testclass="kg.apc.jmeter.samplers.DummySampler" testname="Sample HTTP Request" enabled="true">
+          <boolProp name="WAITING">true</boolProp>
+          <boolProp name="SUCCESFULL">false</boolProp>
+          <stringProp name="RESPONSE_CODE">500</stringProp>
+          <stringProp name="RESPONSE_MESSAGE">Something Went Wrong</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_TIME">${__Random(30,500)}</stringProp>
+          <stringProp name="LATENCY">${__Random(1,200)}</stringProp>
+          <stringProp name="CONNECT">${__Random(1,55)}</stringProp>
+          <stringProp name="URL"></stringProp>
+          <stringProp name="RESULT_CLASS">org.apache.jmeter.samplers.SampleResult</stringProp>
+        </kg.apc.jmeter.samplers.DummySampler>
+        <hashTree/>
+        <kg.apc.jmeter.samplers.DummySampler guiclass="kg.apc.jmeter.samplers.DummySamplerGui" testclass="kg.apc.jmeter.samplers.DummySampler" testname="Sample HTTP Request" enabled="true">
+          <boolProp name="WAITING">true</boolProp>
+          <boolProp name="SUCCESFULL">false</boolProp>
+          <stringProp name="RESPONSE_CODE">200</stringProp>
+          <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_TIME">${__Random(30,500)}</stringProp>
+          <stringProp name="LATENCY">${__Random(1,200)}</stringProp>
+          <stringProp name="CONNECT">${__Random(1,55)}</stringProp>
+          <stringProp name="URL"></stringProp>
+          <stringProp name="RESULT_CLASS">org.apache.jmeter.samplers.SampleResult</stringProp>
+        </kg.apc.jmeter.samplers.DummySampler>
+        <hashTree/>
+        <kg.apc.jmeter.samplers.DummySampler guiclass="kg.apc.jmeter.samplers.DummySamplerGui" testclass="kg.apc.jmeter.samplers.DummySampler" testname="Sample HTTP Request" enabled="true">
+          <boolProp name="WAITING">true</boolProp>
+          <boolProp name="SUCCESFULL">true</boolProp>
+          <stringProp name="RESPONSE_CODE">302</stringProp>
+          <stringProp name="RESPONSE_MESSAGE">Redirected</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_TIME">${__Random(30,500)}</stringProp>
+          <stringProp name="LATENCY">${__Random(1,200)}</stringProp>
+          <stringProp name="CONNECT">${__Random(1,55)}</stringProp>
+          <stringProp name="URL"></stringProp>
+          <stringProp name="RESULT_CLASS">org.apache.jmeter.samplers.SampleResult</stringProp>
+        </kg.apc.jmeter.samplers.DummySampler>
+        <hashTree/>
+        <kg.apc.jmeter.samplers.DummySampler guiclass="kg.apc.jmeter.samplers.DummySamplerGui" testclass="kg.apc.jmeter.samplers.DummySampler" testname="Fast HTTP Request" enabled="true">
+          <boolProp name="WAITING">true</boolProp>
+          <boolProp name="SUCCESFULL">true</boolProp>
+          <stringProp name="RESPONSE_CODE">302</stringProp>
+          <stringProp name="RESPONSE_MESSAGE">Redirected</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_DATA">Dummy Sampler used to simulate requests and responses
+without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_TIME">${__Random(30,50)}</stringProp>
+          <stringProp name="LATENCY">${__Random(1,5)}</stringProp>
+          <stringProp name="CONNECT">${__Random(1,3)}</stringProp>
+          <stringProp name="URL"></stringProp>
+          <stringProp name="RESULT_CLASS">org.apache.jmeter.samplers.SampleResult</stringProp>
+        </kg.apc.jmeter.samplers.DummySampler>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Second HTTP Request" enabled="false">
           <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -95,7 +170,7 @@ props.put(&quot;tracer&quot;, tracer);</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
           <boolProp name="HTTPSampler.BROWSER_COMPATIBLE_MULTIPART">false</boolProp>
           <boolProp name="HTTPSampler.image_parser">false</boolProp>
@@ -105,7 +180,7 @@ props.put(&quot;tracer&quot;, tracer);</stringProp>
           <intProp name="HTTPSampler.ipSourceType">0</intProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Third HTTP Request" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Third HTTP Request" enabled="false">
           <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -115,7 +190,7 @@ props.put(&quot;tracer&quot;, tracer);</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
           <boolProp name="HTTPSampler.BROWSER_COMPATIBLE_MULTIPART">false</boolProp>
           <boolProp name="HTTPSampler.image_parser">false</boolProp>
@@ -124,53 +199,6 @@ props.put(&quot;tracer&quot;, tracer);</stringProp>
           <boolProp name="HTTPSampler.md5">false</boolProp>
           <intProp name="HTTPSampler.ipSourceType">0</intProp>
         </HTTPSamplerProxy>
-        <hashTree/>
-        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="OpenTelemetry Start Span" enabled="true">
-          <stringProp name="scriptLanguage">groovy</stringProp>
-          <stringProp name="parameters"></stringProp>
-          <stringProp name="filename"></stringProp>
-          <stringProp name="cacheKey">true</stringProp>
-          <stringProp name="script">import org.apache.jmeter.threads.JMeterVariables;
-import io.opentelemetry.context.propagation.TextMapSetter;
-import io.opentelemetry.context.Context;
-
-def tracer = props.get(&quot;tracer&quot;);
-
-def currentSpan = tracer.spanBuilder(&quot;http request&quot;).startSpan();
-vars.putObject(&quot;currentSpan&quot;, currentSpan);
-
-TextMapSetter&lt;JMeterVariables&gt; setter = new TextMapSetter&lt;JMeterVariables&gt;() {
-	@Override
-	public void set(JMeterVariables carrier, String key, String value){
-			carrier.put(key, value);
-	}
-	
-}
-
-props.get(&quot;opentelemetry&quot;).getPropagators().getTextMapPropagator().inject(Context.current().with(currentSpan), vars, setter);
-
-
-</stringProp>
-        </JSR223PreProcessor>
-        <hashTree/>
-        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="OpenTelemetry End Span" enabled="true">
-          <stringProp name="cacheKey">true</stringProp>
-          <stringProp name="filename"></stringProp>
-          <stringProp name="parameters"></stringProp>
-          <stringProp name="script">import io.opentelemetry.context.Context;
-import org.apache.jmeter.protocol.http.sampler.HTTPSampleResult;
-
-
-def currentSpan = vars.getObject(&quot;currentSpan&quot;);
-currentSpan.updateName(prev.getSampleLabel());
-if (prev instanceof HTTPSampleResult) {
-	
-}
-
-
-currentSpan.end();</stringProp>
-          <stringProp name="scriptLanguage">groovy</stringProp>
-        </JSR223PostProcessor>
         <hashTree/>
         <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
           <collectionProp name="HeaderManager.headers">
@@ -181,11 +209,68 @@ currentSpan.end();</stringProp>
           </collectionProp>
         </HeaderManager>
         <hashTree/>
+        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="OpenTelemetry Start Span" enabled="false">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="script">import org.apache.jmeter.threads.JMeterVariables;
+import io.opentelemetry.context.propagation.TextMapSetter;
+import io.opentelemetry.context.Context;
+import io.opentelemetry.api.trace.Span;
+
+
+
+def tracer = props.get(&quot;tracer&quot;);
+
+def currentSpan = tracer.spanBuilder(&quot;http request&quot;).setParent(Context.root()).startSpan();
+def scope = currentSpan.makeCurrent();
+vars.putObject(&quot;currentSpan&quot;, currentSpan);
+vars.putObject(&quot;currentScope&quot;, scope);
+
+TextMapSetter&lt;JMeterVariables&gt; setter = new TextMapSetter&lt;JMeterVariables&gt;() {
+	@Override
+	public void set(JMeterVariables carrier, String key, String value){
+			carrier.put(key, value);
+	}
+}
+vars.put(&quot;traceID&quot;, Span.current().getSpanContext().getTraceId().toString());
+props.get(&quot;sdk&quot;).getPropagators().getTextMapPropagator().inject(Context.current().with(currentSpan), vars, setter);
+
+
+</stringProp>
+        </JSR223PreProcessor>
+        <hashTree/>
+        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="OpenTelemetry End Span" enabled="false">
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="script">import io.opentelemetry.context.Context;
+import org.apache.jmeter.protocol.http.sampler.HTTPSampleResult;
+
+
+def currentSpan = vars.getObject(&quot;currentSpan&quot;);
+def currentScope = vars.getObject(&quot;currentScope&quot;);
+currentSpan.updateName(prev.getSampleLabel());
+
+
+currentScope.close();
+currentSpan.end();
+</stringProp>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+        </JSR223PostProcessor>
+        <hashTree/>
+        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Flow Control Action" enabled="false">
+          <intProp name="ActionProcessor.action">1</intProp>
+          <intProp name="ActionProcessor.target">0</intProp>
+          <stringProp name="ActionProcessor.duration">1000</stringProp>
+        </TestAction>
+        <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Kafka Producers" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Kafka Producers" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <stringProp name="LoopController.loops">1</stringProp>
+          <intProp name="LoopController.loops">-1</intProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">1</stringProp>
@@ -259,6 +344,7 @@ span.addEvent(&quot;send-to-topic-start&quot;);
 def recordFuture = producer.send(record);
 span.addEvent(&quot;send-to-topic-end&quot;);
 
+//this piece here waits for acks
 recordFuture.get();
 span.addEvent(&quot;send-to-topic-ack&quot;);</stringProp>
           </JSR223Sampler>
@@ -276,21 +362,25 @@ span.addEvent(&quot;send-to-topic-ack&quot;);</stringProp>
             <stringProp name="script">import org.apache.jmeter.threads.JMeterVariables;
 import io.opentelemetry.context.propagation.TextMapSetter;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.api.trace.Span;
+
+
 
 def tracer = props.get(&quot;tracer&quot;);
 
-def currentSpan = tracer.spanBuilder(&quot;http request&quot;).startSpan();
+def currentSpan = tracer.spanBuilder(&quot;http request&quot;).setParent(Context.root()).startSpan();
+def scope = currentSpan.makeCurrent();
 vars.putObject(&quot;currentSpan&quot;, currentSpan);
+vars.putObject(&quot;currentScope&quot;, scope);
 
 TextMapSetter&lt;JMeterVariables&gt; setter = new TextMapSetter&lt;JMeterVariables&gt;() {
 	@Override
 	public void set(JMeterVariables carrier, String key, String value){
 			carrier.put(key, value);
 	}
-	
 }
-
-props.get(&quot;opentelemetry&quot;).getPropagators().getTextMapPropagator().inject(Context.current().with(currentSpan), vars, setter);
+vars.put(&quot;traceID&quot;, Span.current().getSpanContext().getTraceId().toString());
+props.get(&quot;sdk&quot;).getPropagators().getTextMapPropagator().inject(Context.current().with(currentSpan), vars, setter);
 
 
 </stringProp>
@@ -305,12 +395,11 @@ import org.apache.jmeter.protocol.http.sampler.HTTPSampleResult;
 
 
 def currentSpan = vars.getObject(&quot;currentSpan&quot;);
+def currentScope = vars.getObject(&quot;currentScope&quot;);
 currentSpan.updateName(prev.getSampleLabel());
-if (prev instanceof HTTPSampleResult) {
-	
-}
 
 
+currentScope.close();
 currentSpan.end();
 </stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
@@ -324,7 +413,7 @@ currentSpan.end();
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Kafka Consumers" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Kafka Consumers" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <stringProp name="LoopController.loops">1</stringProp>
@@ -419,7 +508,7 @@ def consumer = vars.getObject(&quot;consumer&quot;);
 
 def records = consumer.poll(1000); // Poll for 1 second
 for (record in records) {
-     def extractedContext = props.get(&quot;opentelemetry&quot;).getPropagators().getTextMapPropagator().extract(Context.current(), record, getter);
+     def extractedContext = props.get(&quot;sdk&quot;).getPropagators().getTextMapPropagator().extract(Context.current(), record, getter);
      def responseSpan = tracer.spanBuilder(&quot;kafka-response&quot;).addLink(currentSpan.getSpanContext()).setParent(extractedContext).startSpan();
      responseSpan.addEvent(&quot;kafka-resp-timestamp&quot;, Attributes.empty(), record.timestamp(), TimeUnit.MILLISECONDS);
      responseSpan.end();
@@ -439,11 +528,16 @@ for (record in records) {
             <stringProp name="script">import org.apache.jmeter.threads.JMeterVariables;
 import io.opentelemetry.context.propagation.TextMapSetter;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.api.trace.Span;
+
+
 
 def tracer = props.get(&quot;tracer&quot;);
 
-def currentSpan = tracer.spanBuilder(&quot;http request&quot;).startSpan();
+def currentSpan = tracer.spanBuilder(&quot;http request&quot;).setParent(Context.root()).startSpan();
+def scope = currentSpan.makeCurrent();
 vars.putObject(&quot;currentSpan&quot;, currentSpan);
+vars.putObject(&quot;currentScope&quot;, scope);
 
 TextMapSetter&lt;JMeterVariables&gt; setter = new TextMapSetter&lt;JMeterVariables&gt;() {
 	@Override
@@ -451,8 +545,8 @@ TextMapSetter&lt;JMeterVariables&gt; setter = new TextMapSetter&lt;JMeterVariabl
 			carrier.put(key, value);
 	}
 }
-
-props.get(&quot;opentelemetry&quot;).getPropagators().getTextMapPropagator().inject(Context.current().with(currentSpan), vars, setter);
+vars.put(&quot;traceID&quot;, Span.current().getSpanContext().getTraceId().toString());
+props.get(&quot;sdk&quot;).getPropagators().getTextMapPropagator().inject(Context.current().with(currentSpan), vars, setter);
 
 
 </stringProp>
@@ -467,9 +561,12 @@ import org.apache.jmeter.protocol.http.sampler.HTTPSampleResult;
 
 
 def currentSpan = vars.getObject(&quot;currentSpan&quot;);
+def currentScope = vars.getObject(&quot;currentScope&quot;);
 currentSpan.updateName(prev.getSampleLabel());
 
+
 currentSpan.end();
+currentScope.close();
 </stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223PostProcessor>
@@ -499,7 +596,52 @@ currentSpan.end();
         </JSR223Sampler>
         <hashTree/>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename">/Users/jakubdering/Desktop/apache-jmeter-5.6.2/bin/samplejtl.jtl</stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <kg.apc.jmeter.reporters.FlexibleFileWriter guiclass="kg.apc.jmeter.reporters.FlexibleFileWriterGui" testclass="kg.apc.jmeter.reporters.FlexibleFileWriter" testname="jp@gc - Flexible File Writer" enabled="true">
+        <stringProp name="filename">${logpath}/newTest.jtl</stringProp>
+        <stringProp name="columns">{ &quot;endTime&quot; : |endTime|, &quot;success&quot; : |isSuccsessful|, &quot;label&quot; : &quot;|sampleLabel|&quot;, &quot;latency&quot; : |latency|, &quot;connect_time&quot; : |connectTime|, &quot;responseTime&quot; : |responseTime|, &quot;receivedBytes&quot; : |receivedBytes|, &quot;responseSize&quot; : |responseSize|, &quot;responseCode&quot; : |responseCode|, &quot;startTime&quot; : |startTime|, &quot;threadGroup&quot; : &quot;|threadName|&quot;,  &quot;grpThreads&quot; : |grpThreads|, &quot;responseMessage&quot;: &quot;|responseMessage|&quot;, &quot;threadCount&quot; : |threadsCount|, &quot;traceID&quot; : &quot;|variable#0|&quot;}\r\n</stringProp>
+        <boolProp name="overwrite">true</boolProp>
+        <stringProp name="header"></stringProp>
+        <stringProp name="footer"></stringProp>
+      </kg.apc.jmeter.reporters.FlexibleFileWriter>
+      <hashTree/>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -535,14 +677,6 @@ currentSpan.end();
         </objProp>
         <stringProp name="filename"></stringProp>
       </ResultCollector>
-      <hashTree/>
-      <kg.apc.jmeter.reporters.FlexibleFileWriter guiclass="kg.apc.jmeter.reporters.FlexibleFileWriterGui" testclass="kg.apc.jmeter.reporters.FlexibleFileWriter" testname="jp@gc - Flexible File Writer" enabled="true">
-        <stringProp name="filename">testResults.txt</stringProp>
-        <stringProp name="columns">endTimeMillis|\t|responseTime|\t|latency|\t|sentBytes|\t|receivedBytes|\t|isSuccessful|\t|responseCode|\r\n</stringProp>
-        <boolProp name="overwrite">false</boolProp>
-        <stringProp name="header"></stringProp>
-        <stringProp name="footer"></stringProp>
-      </kg.apc.jmeter.reporters.FlexibleFileWriter>
       <hashTree/>
     </hashTree>
   </hashTree>
