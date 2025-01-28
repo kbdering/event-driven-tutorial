@@ -20,7 +20,7 @@
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp OTEL" enabled="false">
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp OTEL" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <stringProp name="LoopController.loops">1</stringProp>
@@ -61,13 +61,13 @@ props.put(&quot;tracer&quot;,tracer);
         </JSR223Sampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="OTEL - HTTP Calls " enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="OTEL - HTTP Calls " enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <intProp name="LoopController.loops">-1</intProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.num_threads">500</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <boolProp name="ThreadGroup.delayedStart">false</boolProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -209,7 +209,7 @@ without actual network activity. This helps debugging tests.</stringProp>
           </collectionProp>
         </HeaderManager>
         <hashTree/>
-        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="OpenTelemetry Start Span" enabled="false">
+        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="OpenTelemetry Start Span" enabled="true">
           <stringProp name="scriptLanguage">groovy</stringProp>
           <stringProp name="parameters"></stringProp>
           <stringProp name="filename"></stringProp>
@@ -241,7 +241,7 @@ props.get(&quot;sdk&quot;).getPropagators().getTextMapPropagator().inject(Contex
 </stringProp>
         </JSR223PreProcessor>
         <hashTree/>
-        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="OpenTelemetry End Span" enabled="false">
+        <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="OpenTelemetry End Span" enabled="true">
           <stringProp name="cacheKey">true</stringProp>
           <stringProp name="filename"></stringProp>
           <stringProp name="parameters"></stringProp>
@@ -267,13 +267,13 @@ currentSpan.end();
         </TestAction>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Kafka Producers" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Kafka Producers" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <intProp name="LoopController.loops">-1</intProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">5</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <boolProp name="ThreadGroup.delayedStart">false</boolProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -413,7 +413,7 @@ currentSpan.end();
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Kafka Consumers" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Kafka Consumers" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <stringProp name="LoopController.loops">1</stringProp>
@@ -456,7 +456,7 @@ props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, &quot;localhost:29092&quot;) 
 props.put(ConsumerConfig.GROUP_ID_CONFIG, &quot;test-group&quot;) // Consumer group ID
 props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.name)
 props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.name)
-//props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, &quot;latest&quot;) // Start reading from the latest offset
+props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, &quot;latest&quot;) // Start reading from the latest offset
 
 // Create Kafka consumer
 def consumer = new KafkaConsumer&lt;String, String&gt;(props)
@@ -633,7 +633,7 @@ currentScope.close();
         <stringProp name="filename">/Users/jakubdering/Desktop/apache-jmeter-5.6.2/bin/samplejtl.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
-      <kg.apc.jmeter.reporters.FlexibleFileWriter guiclass="kg.apc.jmeter.reporters.FlexibleFileWriterGui" testclass="kg.apc.jmeter.reporters.FlexibleFileWriter" testname="jp@gc - Flexible File Writer" enabled="true">
+      <kg.apc.jmeter.reporters.FlexibleFileWriter guiclass="kg.apc.jmeter.reporters.FlexibleFileWriterGui" testclass="kg.apc.jmeter.reporters.FlexibleFileWriter" testname="jp@gc - Flexible File Writer" enabled="false">
         <stringProp name="filename">${logpath}/newTest.jtl</stringProp>
         <stringProp name="columns">{ &quot;endTime&quot; : |endTime|, &quot;success&quot; : |isSuccsessful|, &quot;label&quot; : &quot;|sampleLabel|&quot;, &quot;latency&quot; : |latency|, &quot;connect_time&quot; : |connectTime|, &quot;responseTime&quot; : |responseTime|, &quot;receivedBytes&quot; : |receivedBytes|, &quot;responseSize&quot; : |responseSize|, &quot;responseCode&quot; : |responseCode|, &quot;startTime&quot; : |startTime|, &quot;threadGroup&quot; : &quot;|threadName|&quot;,  &quot;grpThreads&quot; : |grpThreads|, &quot;responseMessage&quot;: &quot;|responseMessage|&quot;, &quot;threadCount&quot; : |threadsCount|, &quot;traceID&quot; : &quot;|variable#0|&quot;}\r\n</stringProp>
         <boolProp name="overwrite">true</boolProp>
@@ -677,6 +677,130 @@ currentScope.close();
         </objProp>
         <stringProp name="filename"></stringProp>
       </ResultCollector>
+      <hashTree/>
+      <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="Backend Listener" enabled="true">
+        <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="kafka.acks" elementType="Argument">
+              <stringProp name="Argument.name">kafka.acks</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.bootstrap.servers" elementType="Argument">
+              <stringProp name="Argument.name">kafka.bootstrap.servers</stringProp>
+              <stringProp name="Argument.value">localhost:29092</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.topic" elementType="Argument">
+              <stringProp name="Argument.name">kafka.topic</stringProp>
+              <stringProp name="Argument.value">JMETER_REPORTING</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.sample.filter" elementType="Argument">
+              <stringProp name="Argument.name">kafka.sample.filter</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.fields" elementType="Argument">
+              <stringProp name="Argument.name">kafka.fields</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.test.mode" elementType="Argument">
+              <stringProp name="Argument.name">kafka.test.mode</stringProp>
+              <stringProp name="Argument.value">info</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.parse.all.req.headers" elementType="Argument">
+              <stringProp name="Argument.name">kafka.parse.all.req.headers</stringProp>
+              <stringProp name="Argument.value">false</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.parse.all.res.headers" elementType="Argument">
+              <stringProp name="Argument.name">kafka.parse.all.res.headers</stringProp>
+              <stringProp name="Argument.value">false</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.timestamp" elementType="Argument">
+              <stringProp name="Argument.name">kafka.timestamp</stringProp>
+              <stringProp name="Argument.value">yyyy-MM-dd&apos;T&apos;HH:mm:ss.SSSZZ</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.compression.type" elementType="Argument">
+              <stringProp name="Argument.name">kafka.compression.type</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.enabled" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.enabled</stringProp>
+              <stringProp name="Argument.value">false</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.key.password" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.key.password</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.keystore.location" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.keystore.location</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.keystore.password" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.keystore.password</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.truststore.location" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.truststore.location</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.truststore.password" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.truststore.password</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.enabled.protocols" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.enabled.protocols</stringProp>
+              <stringProp name="Argument.value">TLSv1.2,TLSv1.1,TLSv1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.keystore.type" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.keystore.type</stringProp>
+              <stringProp name="Argument.value">JKS</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.protocol" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.protocol</stringProp>
+              <stringProp name="Argument.value">TLS</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.provider" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.provider</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.ssl.truststore.type" elementType="Argument">
+              <stringProp name="Argument.name">kafka.ssl.truststore.type</stringProp>
+              <stringProp name="Argument.value">JKS</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.batch.size" elementType="Argument">
+              <stringProp name="Argument.name">kafka.batch.size</stringProp>
+              <stringProp name="Argument.value">16384</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.client.id" elementType="Argument">
+              <stringProp name="Argument.name">kafka.client.id</stringProp>
+              <stringProp name="Argument.value">JMeterKafkaBackendListener</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="kafka.connections.max.idle.ms" elementType="Argument">
+              <stringProp name="Argument.name">kafka.connections.max.idle.ms</stringProp>
+              <stringProp name="Argument.value">180000</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="runid" elementType="Argument">
+              <stringProp name="Argument.name">runid</stringProp>
+              <stringProp name="Argument.value">17</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </elementProp>
+        <stringProp name="classname">io.github.rahulsinghai.jmeter.backendlistener.kafka.KafkaBackendClient</stringProp>
+      </BackendListener>
       <hashTree/>
     </hashTree>
   </hashTree>

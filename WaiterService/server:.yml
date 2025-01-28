@@ -1,0 +1,42 @@
+server:
+  http_listen_port: 0
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+  
+scrape_configs:
+  - job_name: jmeter_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: jmeter
+          __path__: /var/logs/*.jtl
+    pipeline_stages:
+          - regex:
+              expression: "^(?P<threadGroup>.*)\\s*\\d+-\\d+"
+              source:     "threadGroup"
+          - json:
+              expressions:
+                success: success
+                label: label
+                latency: latency
+                connect_time: connect_time
+                responseTime: responseTime
+                receivedBytes: receivedBytes
+                responseSize: responseSize
+                responseCode: responseCode
+                startTime: startTime
+                threadGroup: threadGroup
+                grpThreads: grpThreads
+                threadCount: threadCount
+                traceID: traceID
+          - timestamp:
+              source: startTime
+              format: UnixMs
+          - labels:
+              label:
+              responseCode:
+              success:
+

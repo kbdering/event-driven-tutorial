@@ -13,7 +13,7 @@ func main() {
 
 	requestTopic := "Waiter-Requests"
 	responseTopic := "Waiter-Responses"
-	requestsChannel := make(chan *Message,10)
+	requestsChannel := make(chan *Message, 10)
 	responsesChannel := make(chan *Message, 10)
 
 	pConfig := map[string]string{
@@ -26,6 +26,7 @@ func main() {
 		"client.id":         "golang",
 		"group.id":          "waiter",
 		"fetch.max.bytes":   "1",
+		"auto.offset.reset": "latest",
 		"topic":             requestTopic,
 	}
 
