@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: waiter-service-config
+data:
+  config.yaml: |
+    service:
+      num_threads: 50
+      wait_time: 500
+      request_buffer: 1000
+      response_buffer: 1000
+      rate_limit: 100
+      poll_duration: 100  # milliseconds
+      num_producers: 2
+      num_consumers: 3
+    kafka:
+      bootstrap_servers: "kafka-service:9092"
+      client_id: "waiter-service"
+      group_id: "waiter-group"
+      request_topic: "Waiter-Requests"
+      response_topic: "Waiter-Responses"
+      max_retries: 3
+      retry_backoff: 1000

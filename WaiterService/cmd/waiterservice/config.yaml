@@ -1,0 +1,27 @@
+    service:
+      num_threads: 100
+      wait_time: 500
+      request_buffer: 1000
+      response_buffer: 1000
+      rate_limit: 100
+      poll_duration: 100  # milliseconds
+      num_producers: 2
+      num_consumers: 3
+      messaging_system: "kafka"  # or "mq"
+    kafka:
+      bootstrap_servers: "localhost:29092"
+      client_id: "waiter-service"
+      group_id: "waiter-group"
+      request_topic: "Waiter-Requests"
+      response_topic: "Waiter-Responses"
+      max_retries: 3
+      retry_backoff: 1000
+    mq:
+      host: "localhost"
+      port: 5672
+      username: "guest"
+      password: "guest"
+      request_queue: "waiter-requests"
+      response_queue: "waiter-responses"
+      max_retries: 3
+      retry_backoff: 1000
